@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/group_main">
+        <item
+            android:id="@+id/main"
+            android:title="@string/main_menu_main"
+            android:icon="@drawable/home"/>
+        <item
+            android:id="@+id/statistic"
+            android:title="@string/main_menu_statisctics"
+            android:icon="@drawable/statics"/>
+        <item
+            android:id="@+id/explore"
+            android:title="@string/main_menu_explore"
+            android:icon="@drawable/explore"/>
+    </group>
+    <group android:id="@+id/group_set">
+        <item
+            android:id="@+id/theme"
+            android:title="@string/main_menu_theme"
+            android:icon="@drawable/theme"/>
+        <item
+            android:id="@+id/setup"
+            android:title="@string/main_menu_set"
+            android:icon="@drawable/setup"/>
+    </group>
+</menu>

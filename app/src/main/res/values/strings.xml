@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TD记账</string>
+    <string name="main_menu_statisctics">统计</string>
+    <string name="main_menu_expenditure">支出</string>
+    <string name="main_menu_explore">探索</string>
+    <string name="main_menu_theme">主题</string>
+    <string name="main_menu_set">设置</string>
+    <string name="main_menu_main">首页</string>
+    <string name="theme_use">使用</string>
+</resources>

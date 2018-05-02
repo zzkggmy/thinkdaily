@@ -2,6 +2,7 @@ package com.byren.kai.thinkdaily.utils
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Resources
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,8 @@ object StatusBarUtil {
     private val FAKE_STATUS_BAR_VIEW_ID = R.id.statusbarutil_fake_status_bar_view
 
 
-    fun setColor(activity: Activity,color: Int) {
+    fun setColor(activity: Activity) {
+        val color = activity.resources.getColor(R.color.zhihu_primary)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             activity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)

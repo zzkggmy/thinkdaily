@@ -13,6 +13,7 @@ import android.os.Message
 import android.provider.Settings
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
@@ -20,6 +21,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.widget.CalendarView
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
@@ -28,6 +30,7 @@ import com.byren.kai.thinkdaily.adapter.RemindAdapter
 import com.byren.kai.thinkdaily.beans.Remind
 import com.byren.kai.thinkdaily.utils.*
 import kotlinx.android.synthetic.main.activity_remind.*
+import kotlinx.android.synthetic.main.add_remind_popup.*
 import kotlinx.android.synthetic.main.add_remind_popup.view.*
 import kotlinx.android.synthetic.main.datepopup.view.*
 import java.text.SimpleDateFormat
@@ -35,7 +38,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class RemindActivity : BaseActivity(), View.OnClickListener {
+class RemindActivity : AppCompatActivity(), View.OnClickListener {
     private var handler: Handler? = null
     private var date = ""
     private var list: ArrayList<Remind> = ArrayList()
@@ -67,7 +70,7 @@ class RemindActivity : BaseActivity(), View.OnClickListener {
         iv_remind_back.setOnClickListener(this)
         iv_date_remind.setOnClickListener(this)
         tv_add_remind.setOnClickListener(this)
-        val simpleFormat = SimpleDateFormat("yyyy-MM-dd")
+        val simpleFormat = SimpleDateFormat("yyyy-M-dd")
         val date = Date(System.currentTimeMillis())
         tv_show_date_remind.text = simpleFormat.format(date).toString()
     }
@@ -85,7 +88,8 @@ class RemindActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onResume() {
         super.onResume()
-        setImmersiveStatusBar(tb_remind, this)
+        StatusBarUtil.setColor(this)
+//        setImmersiveStatusBar(tb_remind, this)
     }
 
     override fun onClick(v: View) {
@@ -98,23 +102,25 @@ class RemindActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat", "SetTextI18n")
     private fun showPopUp() {
+        val time = StringBuffer()
         val addPop = LayoutInflater.from(this).inflate(R.layout.add_remind_popup, null, false)
         val addWindow = PopupWindow(addPop, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-        val simpleFormate = SimpleDateFormat("yyyy-MM-dd")
+        val simpleFormate = SimpleDateFormat("yyyy-M-dd")
         val date = Date(System.currentTimeMillis())
-        addPop.tv_show_date_add_remind_pop.text = "" + simpleFormate.format(date)
+        addPop.tv_show_date_add_remind_pop.text = simpleFormate.format(date)
         addPop.iv_back_add_remind_pop.setOnClickListener { addWindow.dismiss() }
         addPop.iv_save_add_remind_pop.setOnClickListener {
             saveRemind(addWindow, addPop)
         }
-        addPop.iv_date_add_remind_pop.setOnClickListener {
-            addPop.tv_show_date_add_remind_pop.showDate(this, handler!!)
-            setBackGroundAlpha.set(this, 0.3f)
-        }
         addWindow.setOnDismissListener {
             rv_remind.adapter.notifyItemChanged(list.size)
+        }
+
+        addPop.cv_date_remind_pop.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            this.date = "" + year + month + dayOfMonth
+            addPop.tv_show_date_add_remind_pop.text = "$year-$month-$dayOfMonth"
         }
         addWindow.isFocusable = true
         addWindow.isOutsideTouchable = false

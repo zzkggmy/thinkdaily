@@ -7,7 +7,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/tb_statistics"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="25dp"
         android:background="@color/zhihu_primary"
         android:fitsSystemWindows="true">
 
@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:text="收入"
                     android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    android:textSize="17dp" />
                 <View
                     android:layout_width="15dp"
                     android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:text="支出"
                     android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    android:textSize="17dp" />
             </LinearLayout>
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>

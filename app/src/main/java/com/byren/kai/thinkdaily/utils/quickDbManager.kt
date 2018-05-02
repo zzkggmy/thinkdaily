@@ -13,17 +13,11 @@ import com.byren.kai.thinkdaily.beans.Remind
 @SuppressLint("StaticFieldLeak")
 object quickDbManager {
     private val mContext = Common.mContext()
-    private val quickDb: quickAddDb = quickAddDb(mContext, "quick.db", null, 1)
-    private var quickSql: SQLiteDatabase? = null
-
-    init {
-        quickDb.writableDatabase
-        quickSql = mContext.openOrCreateDatabase("quick.db", Context.MODE_PRIVATE, null)
-    }
+    private var quickSql: SQLiteDatabase = mContext.openOrCreateDatabase("thinkDaily.db", Context.MODE_PRIVATE, null)
 
     fun getQuickDb(): ArrayList<Quick> {
         val list: ArrayList<Quick> = ArrayList()
-        val cursor: Cursor = quickSql!!.rawQuery("select * from quick", null, null)
+        val cursor: Cursor = quickSql.rawQuery("select * from quick", null, null)
         while (cursor.moveToNext()) {
             val quick = Quick(cursor.getInt(0), cursor.getString(1))
             Log.d("id", "" + quick)
@@ -35,10 +29,9 @@ object quickDbManager {
 
     @SuppressLint("Recycle")
     fun deleteQuickDb(id: Int) : Boolean {
-        quickDb.writableDatabase
         try {
-            quickSql!!.delete("quick","_id=?", arrayOf(id.toString()))
-//            quickSql!!.execSQL("delete from quick where _id =$id")
+//            quickSql.delete("quick","_id=?", arrayOf(id.toString()))
+            quickSql.execSQL("delete from quick where _id =$id")
             return true
         }catch (e: SQLiteConstraintException){
             return false
@@ -49,7 +42,7 @@ object quickDbManager {
         val quick = Quick(0, content)
         val values = ContentValues()
         values.put("content", content)
-        quickSql!!.insert("quick", null, values)
+        quickSql.insert("quick", null, values)
         return quick
     }
 }

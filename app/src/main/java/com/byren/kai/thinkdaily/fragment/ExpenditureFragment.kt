@@ -39,7 +39,7 @@ class ExpenditureFragment : Fragment(), View.OnClickListener {
     private var adapter: ExpenditureAdapter? = null
     private val mContext = Common.mContext()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = View.inflate(mContext, R.layout.fragment_expenditure, null)
+        val view = View.inflate(activity!!, R.layout.fragment_expenditure, null)
 //        initAdapter(view)
         view.ll_classification_expenditure_frag.setOnClickListener(this)
         view.ll_date_expenditure_frag.setOnClickListener(this)
@@ -66,7 +66,7 @@ class ExpenditureFragment : Fragment(), View.OnClickListener {
 
 
     private fun initAdapter(view: View) {
-        adapter = ExpenditureAdapter(mContext as FragmentActivity, expenditureDbManager.getExpenditure(), { position ->
+        adapter = ExpenditureAdapter(activity!!, expenditureDbManager.getExpenditure(), { position ->
             SpUtils.spSetType(2)
             val intent = Intent(activity, AddBillActivity::class.java)
             intent.putExtra("id", expenditureDbManager.getExpenditure().get(position).expenditureId)
@@ -82,14 +82,14 @@ class ExpenditureFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.ll_classification_expenditure_frag -> {
-                show(mContext as FragmentActivity, v.iv_classification_expenditure_frag, v.tv_classification_expenditure_frag)
-                setBackGroundAlpha.set(mContext, 0.3f)
+                show(activity!!, v.iv_classification_expenditure_frag, v.tv_classification_expenditure_frag)
+                setBackGroundAlpha.set(activity!!, 0.3f)
             }
             R.id.ll_date_expenditure_frag -> {
-                v.tv_date_expenditure_frag.showDate(mContext as FragmentActivity,handler!!)
+                v.tv_date_expenditure_frag.showDate(activity!!,handler!!)
             }
             R.id.iv_complete_expenditure_frag -> {
-                adapter = ExpenditureAdapter(mContext as FragmentActivity, expenditureDbManager.conditionQuery(expenditureType.toString(), expenditureDate), { position ->
+                adapter = ExpenditureAdapter(activity!!, expenditureDbManager.conditionQuery(expenditureType.toString(), expenditureDate), { position ->
                     SpUtils.spSetType(2)
                     val intent = Intent(activity, AddBillActivity::class.java)
                     intent.putExtra("id", expenditureDbManager.getExpenditure().get(position).expenditureId)

@@ -22,7 +22,6 @@ import java.util.*
 class QuickAdapter(activity: Activity, list: ArrayList<Quick>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AdapterItemTouchHelper.ItemTouch {
 
 
-
 //    提醒事件适配器
 
     private var context: Context? = null
@@ -39,7 +38,17 @@ class QuickAdapter(activity: Activity, list: ArrayList<Quick>) : RecyclerView.Ad
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.tv_quick_item.text = list[position].content
-        holder.itemView.tv_tou_item.text = list[position].id.toString()
+        setIcon(holder.itemView.iv_head_quick_item, position)
+    }
+
+    private fun setIcon(iv: ImageView, position: Int) {
+        when (position % 5) {
+            0 -> iv.setImageResource(R.drawable.fivehead)
+            1 -> iv.setImageResource(R.drawable.fourhead)
+            2 -> iv.setImageResource(R.drawable.threehead)
+            3 -> iv.setImageResource(R.drawable.twohead)
+            4 -> iv.setImageResource(R.drawable.onehead)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -48,20 +57,20 @@ class QuickAdapter(activity: Activity, list: ArrayList<Quick>) : RecyclerView.Ad
 
     class QuickHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val tv: TextView = view.findViewById(R.id.tv_quick_item)
-        val touTv: TextView = view.findViewById(R.id.tv_tou_item)
+        val headIv: ImageView = view.findViewById(R.id.iv_head_quick_item)
     }
 
     override fun itemDrag(stratPosition: Int, targetPosition: Int) {
     }
 
     override fun itemSwipe(position: Int) {
-        if (quickDbManager.deleteQuickDb(list[position].id)){
+        if (quickDbManager.deleteQuickDb(list[position].id)) {
             list.removeAt(position)
             notifyItemRemoved(position)
-            notifyItemRangeInserted(position,list.size - position )
+            notifyItemRangeInserted(position, list.size - position)
             notifyDataSetChanged()
             showToast.shortToast("删除成功")
-        }else{
+        } else {
             showToast.shortToast("删除失败")
         }
     }

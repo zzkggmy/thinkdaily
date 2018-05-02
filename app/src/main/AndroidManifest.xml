@@ -3,7 +3,9 @@
     package="com.byren.kai.thinkdaily">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -21,15 +23,12 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_resources" />
         </provider>
+
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activity.BaseActivity"
@@ -41,12 +40,20 @@
         <activity
             android:name=".activity.RemindActivity"
             android:label="提醒"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.AddBillActivity"
             android:label="添加账单"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".activity.DatePicActivity"/>
+        <activity android:name=".activity.PieActivity" />
+        <activity android:name=".activity.SplashActivity"
+            android:launchMode="singleTask">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
     </application>
 
 </manifest>

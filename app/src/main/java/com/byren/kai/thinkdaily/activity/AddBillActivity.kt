@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.annotation.RequiresApi
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
@@ -37,7 +38,7 @@ import kotlin.collections.ArrayList
  * Created by Lucas on 2018/3/27 .
  * 添加记账Activity
  */
-class AddBillActivity : BaseActivity(), View.OnClickListener {
+class AddBillActivity : AppCompatActivity(), View.OnClickListener {
     private var date = ""
     private var id = 0
     private var expenditureType = "0"
@@ -59,7 +60,7 @@ class AddBillActivity : BaseActivity(), View.OnClickListener {
         setSupportActionBar(tb_addbill)
         if (intent.getIntExtra("id", 0) == 0) {
             initStatusBar()
-            val simpleFormate = SimpleDateFormat("yyyy-MM-dd")
+            val simpleFormate = SimpleDateFormat("yyyy-M-dd")
             val date = Date(System.currentTimeMillis())
             tv_date_addbill.text = "" + simpleFormate.format(date)
             SpUtils.spSetDate(tv_date_addbill.text.toString())
@@ -506,7 +507,8 @@ class AddBillActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onResume() {
         super.onResume()
-        setImmersiveStatusBar(tb_addbill, this)
+        StatusBarUtil.setColor(this)
+//        setImmersiveStatusBar(tb_addbill, this)
     }
 
     fun TextView.showDate(activity: Activity) {

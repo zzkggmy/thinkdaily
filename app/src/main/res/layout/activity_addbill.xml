@@ -8,7 +8,7 @@
         android:id="@+id/tb_addbill"
         android:background="@color/zhihu_primary"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="25dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -28,34 +28,33 @@
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="15dp">
+                android:layout_centerVertical="true">
 
                 <TextView
                     android:gravity="center"
                     android:id="@+id/tv_income_addbill"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="5dp"
                     android:text="收入"
                     android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    android:textSize="17dp" />
 
                 <TextView
                     android:gravity="center"
                     android:id="@+id/tv_expenditure_addbill"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="5dp"
                     android:text="支出"
                     android:textColor="@color/white"
-                    android:textSize="17sp" />
+                    android:textSize="17dp" />
 
             </RelativeLayout>
             <ImageView

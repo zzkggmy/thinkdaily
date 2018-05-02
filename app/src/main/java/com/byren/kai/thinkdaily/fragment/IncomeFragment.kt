@@ -37,7 +37,6 @@ class IncomeFragment : Fragment(), View.OnClickListener {
     private var handler: Handler? = null
     private var adapter: IncomeAdapter? = null
     private val mContext = Common.mContext()
-    private var linearLayoutManager: LinearLayoutManager = LinearLayoutManager(mContext)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = View.inflate(mContext, R.layout.fragment_income, null)
         view.ll_classification_income_frag.setOnClickListener(this)
@@ -67,16 +66,16 @@ class IncomeFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.ll_classification_income_frag -> {
-                setBackGroundAlpha.set(mContext as FragmentActivity, 0.3f)
-                showType(mContext, v.iv_classfication_income_frag, v.tv_classification_income_frag)
+                setBackGroundAlpha.set(activity!!, 0.3f)
+                showType(activity!!, v.iv_classfication_income_frag, v.tv_classification_income_frag)
 
             }
             R.id.ll_date_income_frag -> {
-                v.tv_date_income_frag.showDate(mContext as FragmentActivity,handler!!)
+                v.tv_date_income_frag.showDate(activity!!,handler!!)
             }
             R.id.iv_complete_income_frag ->{
                 Log.d("income",incomeDate + incomeType)
-                adapter = IncomeAdapter(mContext as FragmentActivity, incomeDbManager.conditionalQuery(incomeType.toString(),incomeDate), { position ->
+                adapter = IncomeAdapter(activity!!, incomeDbManager.conditionalQuery(incomeType.toString(),incomeDate), { position ->
                     val intent = Intent(activity, AddBillActivity::class.java)
                     intent.putExtra("id", incomeDbManager.getIncome()[position].incomeId)
                     startActivity(intent)
@@ -86,7 +85,7 @@ class IncomeFragment : Fragment(), View.OnClickListener {
                 val itemTouchHelper = ItemTouchHelper(helper)
                 itemTouchHelper.attachToRecyclerView(view!!.rv_income_frag)
                 view!!.rv_income_frag.adapter = adapter
-                view!!.rv_income_frag.layoutManager = linearLayoutManager
+                view!!.rv_income_frag.layoutManager = LinearLayoutManager(activity!!)
                 view!!.rv_income_frag.adapter!!.notifyDataSetChanged()
             }
         }
@@ -104,7 +103,7 @@ class IncomeFragment : Fragment(), View.OnClickListener {
         val itemTouchHelper = ItemTouchHelper(helper)
         itemTouchHelper.attachToRecyclerView(view!!.rv_income_frag)
         view!!.rv_income_frag.adapter = adapter
-        view!!.rv_income_frag.layoutManager = linearLayoutManager
+        view!!.rv_income_frag.layoutManager = LinearLayoutManager(activity!!)
         view!!.rv_income_frag.adapter!!.notifyDataSetChanged()
     }
 

@@ -2,18 +2,14 @@ package com.byren.kai.thinkdaily.adapter
 
 import android.app.Activity
 import android.content.Context
-import android.support.v4.view.LayoutInflaterCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.ImageView
 import android.widget.TextView
 import com.byren.kai.thinkdaily.R
 import com.byren.kai.thinkdaily.beans.Remind
 import com.byren.kai.thinkdaily.utils.AdapterItemTouchHelper
-import com.byren.kai.thinkdaily.utils.RvItemTouchHelper
 import com.byren.kai.thinkdaily.utils.remindDbManager
 import com.byren.kai.thinkdaily.utils.showToast
 import kotlinx.android.synthetic.main.remind_item.view.*

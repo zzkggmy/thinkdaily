@@ -15,6 +15,7 @@ import com.byren.kai.thinkdaily.R
 import com.byren.kai.thinkdaily.fragment.ExpenditureFragment
 import com.byren.kai.thinkdaily.fragment.IncomeFragment
 import com.byren.kai.thinkdaily.utils.SpUtils
+import com.byren.kai.thinkdaily.utils.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_statistics.*
 
 /**
@@ -68,19 +69,7 @@ class StatisticsActivity : FragmentActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onResume() {
         super.onResume()
-        setTranslucentStatus(this)
-    }
-
-    private fun setTranslucentStatus(activity: Activity) {
-        val window: Window = activity.window
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = Color.TRANSPARENT
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
-        }
+        StatusBarUtil.setColor(this)
     }
 
     override fun onDestroy() {

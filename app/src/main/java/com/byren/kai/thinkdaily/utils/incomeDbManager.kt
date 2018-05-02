@@ -14,17 +14,12 @@ import android.provider.SyncStateContract.Helpers.update
 @SuppressLint("StaticFieldLeak")
 object incomeDbManager {
     private val mContext = Common.mContext()
-    private val incomeDb: IncomeDb = IncomeDb(mContext, "income.db", null, 1)
-    private var incomeSql: SQLiteDatabase? = null
+    private var incomeSql: SQLiteDatabase = mContext.openOrCreateDatabase("thinkDaily.db", Context.MODE_PRIVATE, null)
 
-    init {
-        incomeDb.writableDatabase
-        incomeSql = mContext.openOrCreateDatabase("income.db", Context.MODE_PRIVATE, null)
-    }
 
     fun getIncome(): ArrayList<IncomeEntity> {
         val list: ArrayList<IncomeEntity> = ArrayList()
-        val cursor: Cursor = incomeSql!!.rawQuery("select * from income", null, null)
+        val cursor: Cursor = incomeSql.rawQuery("select * from income", null, null)
         while (cursor.moveToNext()) {
             val incomeEntity: IncomeEntity = IncomeEntity(cursor.getInt(0),
                     cursor.getString(1),
@@ -54,16 +49,15 @@ object incomeDbManager {
         } catch (e: SQLiteConstraintException) {
             return false
         } finally {
-            incomeSql!!.endTransaction()
+            incomeSql.endTransaction()
         }
 
     }
 
 
     fun deleteIncome(id: Int) : Boolean {
-        incomeDb.writableDatabase
         try {
-            incomeSql!!.execSQL("delete from income where _id =$id")
+            incomeSql.execSQL("delete from income where _id =$id")
             return true
         }catch (e: SQLiteConstraintException){
             return false
@@ -86,8 +80,8 @@ object incomeDbManager {
 
     fun modifyBillInfo(id: Int, incomeAmount: String, incomeType: String
                        , incomeDate: String, incomeNote: String): Boolean {
-        incomeDb.writableDatabase
-        incomeSql!!.beginTransaction()
+
+        incomeSql.beginTransaction()
         try {
             val values = ContentValues()
             values.put("incomeType", incomeType)
@@ -96,18 +90,18 @@ object incomeDbManager {
             values.put("incomeNote", incomeNote)
 
 //                    incomeSql!!.execSQL("update income set incomeType =$incomeType,incomeAmount =$incomeAmount,incomeDate =$incomeDate,incomeNote =$incomeNote where _id =$id")
-            incomeSql!!.update("income", values, "_id=?", arrayOf(id.toString()))
-            incomeSql!!.setTransactionSuccessful()
+            incomeSql.update("income", values, "_id=?", arrayOf(id.toString()))
+            incomeSql.setTransactionSuccessful()
             return true
         } catch (e: SQLiteConstraintException) {
             return false
         } finally {
-            incomeSql!!.endTransaction()
+            incomeSql.endTransaction()
         }
     }
 
     fun conditionalQuery(incomeType: String, date: String): ArrayList<IncomeEntity> {
-        val cursor: Cursor = incomeSql!!.rawQuery("select * from income", null, null)
+        val cursor: Cursor = incomeSql.rawQuery("select * from income", null, null)
         val list: ArrayList<IncomeEntity> = ArrayList()
         if (incomeType.toInt() == -1 && date.isNotEmpty()) {
             while (cursor.moveToNext()) {
@@ -126,6 +120,7 @@ object incomeDbManager {
                     list.add(incomeEntity)
                 }
             }
+            cursor.close()
             return list
         } else if (incomeType.toInt() >= 0 && date.isNotEmpty()) {
             while (cursor.moveToNext()) {
@@ -139,5 +134,6 @@ object incomeDbManager {
         } else {
             return getIncome()
         }
+
     }
 }

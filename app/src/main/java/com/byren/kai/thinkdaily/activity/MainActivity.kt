@@ -1,10 +1,14 @@
 package com.byren.kai.thinkdaily.activity
 
 import android.annotation.SuppressLint
+import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.support.annotation.RequiresApi
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Gravity
@@ -16,20 +20,37 @@ import android.widget.PopupWindow
 import com.byren.kai.thinkdaily.R
 import com.byren.kai.thinkdaily.adapter.QuickAdapter
 import com.byren.kai.thinkdaily.beans.Quick
+import com.byren.kai.thinkdaily.service.RecordService
 import com.byren.kai.thinkdaily.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_remind.*
+import kotlinx.android.synthetic.main.quick_add_pop.*
 import kotlinx.android.synthetic.main.quick_add_pop.view.*
 import kotlinx.android.synthetic.main.settext_popup.view.*
 
-class MainActivity : BaseActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
+    private var exitTime = 0L
     private var quickList: ArrayList<Quick> = ArrayList()
     private var adapter: QuickAdapter? = null
     private val linearLayoutManager = LinearLayoutManager(this)
+    private var serviceConnection: ServiceConnection? = null
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        serviceConnection = object : ServiceConnection {
+            override fun onServiceDisconnected(name: ComponentName?) {
+
+            }
+
+            override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+
+            }
+        }
+        iv_add_main.setOnLongClickListener {
+            startActivity(Intent(this,PieActivity::class.java))
+            true
+        }
         tv_set_income_main.text = SpUtils.income()
         tv_set_budget_main.text = SpUtils.budge()
         tv_set_income_main.setOnClickListener(this)
@@ -106,10 +127,12 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun showQuickPop() {
+        val intent = Intent(this, RecordService::class.java)
         setBackGroundAlpha.set(this, 0.3f)
         val contentView = LayoutInflater.from(this).inflate(R.layout.quick_add_pop, null, false)
         val quickWindow = PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
         quickWindow.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+
         contentView.iv_back_quick_pop.setOnClickListener {
             quickWindow.dismiss()
             setBackGroundAlpha.set(this, 1.0f)
@@ -142,7 +165,17 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onResume() {
         super.onResume()
-        setImmersiveStatusBar(tb_main, this)
+        StatusBarUtil.setColor(this)
         tv_expenditure_main.text = "¥" + expenditureDbManager.getExpenditureNum()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (System.currentTimeMillis() - exitTime > 2000) {
+            showToast.shortToast("再按一次退出")
+            exitTime = System.currentTimeMillis()
+        } else {
+            super.onBackPressed()
+        }
     }
 }
